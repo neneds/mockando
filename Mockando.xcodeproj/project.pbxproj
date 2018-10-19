@@ -11,6 +11,9 @@
 		AF71C96E2179688700813EF2 /* MockandoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF71C96D2179688700813EF2 /* MockandoTests.swift */; };
 		AF71C9702179688700813EF2 /* Mockando.h in Headers */ = {isa = PBXBuildFile; fileRef = AF71C9622179688600813EF2 /* Mockando.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AF71C97B217968FD00813EF2 /* MockRecordSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF71C97A217968FD00813EF2 /* MockRecordSession.swift */; };
+		AF71C97E21796D5C00813EF2 /* MockPersistenceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF71C97D21796D5C00813EF2 /* MockPersistenceManager.swift */; };
+		AF71C9802179700A00813EF2 /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF71C97F2179700A00813EF2 /* Directory.swift */; };
+		AF71C9822179721400813EF2 /* FileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF71C9812179721400813EF2 /* FileHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +34,9 @@
 		AF71C96D2179688700813EF2 /* MockandoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockandoTests.swift; sourceTree = "<group>"; };
 		AF71C96F2179688700813EF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AF71C97A217968FD00813EF2 /* MockRecordSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecordSession.swift; sourceTree = "<group>"; };
+		AF71C97D21796D5C00813EF2 /* MockPersistenceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPersistenceManager.swift; sourceTree = "<group>"; };
+		AF71C97F2179700A00813EF2 /* Directory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Directory.swift; sourceTree = "<group>"; };
+		AF71C9812179721400813EF2 /* FileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,7 @@
 		AF71C9612179688600813EF2 /* Mockando */ = {
 			isa = PBXGroup;
 			children = (
+				AF71C97C21796D2D00813EF2 /* Persistence */,
 				AF71C9792179689800813EF2 /* Recorder */,
 				AF71C9622179688600813EF2 /* Mockando.h */,
 				AF71C9632179688600813EF2 /* Info.plist */,
@@ -95,6 +102,16 @@
 				AF71C97A217968FD00813EF2 /* MockRecordSession.swift */,
 			);
 			path = Recorder;
+			sourceTree = "<group>";
+		};
+		AF71C97C21796D2D00813EF2 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				AF71C97D21796D5C00813EF2 /* MockPersistenceManager.swift */,
+				AF71C97F2179700A00813EF2 /* Directory.swift */,
+				AF71C9812179721400813EF2 /* FileHandler.swift */,
+			);
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -207,6 +224,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AF71C97B217968FD00813EF2 /* MockRecordSession.swift in Sources */,
+				AF71C97E21796D5C00813EF2 /* MockPersistenceManager.swift in Sources */,
+				AF71C9822179721400813EF2 /* FileHandler.swift in Sources */,
+				AF71C9802179700A00813EF2 /* Directory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
