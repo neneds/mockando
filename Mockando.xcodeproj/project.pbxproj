@@ -10,6 +10,7 @@
 		AF71C9692179688700813EF2 /* Mockando.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF71C95F2179688600813EF2 /* Mockando.framework */; };
 		AF71C96E2179688700813EF2 /* MockandoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF71C96D2179688700813EF2 /* MockandoTests.swift */; };
 		AF71C9702179688700813EF2 /* Mockando.h in Headers */ = {isa = PBXBuildFile; fileRef = AF71C9622179688600813EF2 /* Mockando.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AF71C97B217968FD00813EF2 /* MockRecordSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF71C97A217968FD00813EF2 /* MockRecordSession.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		AF71C9682179688700813EF2 /* MockandoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MockandoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF71C96D2179688700813EF2 /* MockandoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockandoTests.swift; sourceTree = "<group>"; };
 		AF71C96F2179688700813EF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AF71C97A217968FD00813EF2 /* MockRecordSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRecordSession.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 		AF71C9612179688600813EF2 /* Mockando */ = {
 			isa = PBXGroup;
 			children = (
+				AF71C9792179689800813EF2 /* Recorder */,
 				AF71C9622179688600813EF2 /* Mockando.h */,
 				AF71C9632179688600813EF2 /* Info.plist */,
 			);
@@ -84,6 +87,14 @@
 				AF71C96F2179688700813EF2 /* Info.plist */,
 			);
 			path = MockandoTests;
+			sourceTree = "<group>";
+		};
+		AF71C9792179689800813EF2 /* Recorder */ = {
+			isa = PBXGroup;
+			children = (
+				AF71C97A217968FD00813EF2 /* MockRecordSession.swift */,
+			);
+			path = Recorder;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +159,7 @@
 				TargetAttributes = {
 					AF71C95E2179688600813EF2 = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1000;
 					};
 					AF71C9672179688700813EF2 = {
 						CreatedOnToolsVersion = 10.0;
@@ -194,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF71C97B217968FD00813EF2 /* MockRecordSession.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +354,7 @@
 		AF71C9742179688700813EF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -358,6 +372,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = br.com.neneds.Mockando;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -366,6 +381,7 @@
 		AF71C9752179688700813EF2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -391,6 +407,7 @@
 		AF71C9772179688700813EF2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P45ZSSC9ZG;
 				INFOPLIST_FILE = MockandoTests/Info.plist;
@@ -409,6 +426,7 @@
 		AF71C9782179688700813EF2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P45ZSSC9ZG;
 				INFOPLIST_FILE = MockandoTests/Info.plist;
