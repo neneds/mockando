@@ -91,7 +91,7 @@ public class MockPlayerSession<T: Codable> {
         guard let currentItem = currentItem else { return }
         var selectedModel: T
         if archivedModels.isEmpty { return }
-        self.currentItem = IndexPath(row: currentItem.row - 1, section: 0)
+
         if currentItem.row <= 0 {
             if !shouldRepeat {
                 delegate?.didFinishPlayingRecordedSession(playerSession: self)
