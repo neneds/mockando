@@ -26,32 +26,7 @@
 import Foundation
 
 extension Bundle {
-
-    var projectDisplayName: String {
-        if let name =  object(forInfoDictionaryKey: "CFBundleDisplayName") as? String {
-            return name
-        } else {
-            return "unknown project"
-        }
-    }
-
-    var projectVersion: String {
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            return version
-        } else {
-            return "unknown"
-        }
-    }
-
-    var projectBuildVersion: String {
-        if let buildVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-            return buildVersion
-        } else {
-            return "unknown"
-        }
-    }
-
-    var bundleID: String {
+    public var bundleID: String {
         guard let bundleId = Bundle.main.bundleIdentifier else { return "" }
         return bundleId
     }

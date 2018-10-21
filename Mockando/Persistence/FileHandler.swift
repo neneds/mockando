@@ -26,10 +26,10 @@
 import Foundation
 
 
-class FileHandler {
+public class FileHandler {
     
     /// Create necessary sub folders before creating a file
-    static func createSubfoldersBeforeCreatingFile(at url: URL) throws {
+    public static func createSubfoldersBeforeCreatingFile(at url: URL) throws {
         do {
             let subfolderUrl = url.deletingLastPathComponent()
             var subfolderExists = false
@@ -46,9 +46,9 @@ class FileHandler {
             throw error
         }
     }
-
+    
     /// Create and returns a URL constructed from specified directory/path
-    static func createURL(for path: String?, in directory: Directory) throws -> URL {
+    public static func createURL(for path: String?, in directory: Directory) throws -> URL {
         let filePrefix = "file://"
         var validPath: String? = nil
         if let path = path {
@@ -91,9 +91,9 @@ class FileHandler {
             throw MockandoError.otherError(reason: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")")
         }
     }
-
+    
     /// Convert a user generated name to a valid file name
-    static func getValidFilePath(from originalString: String) throws -> String {
+    public static func getValidFilePath(from originalString: String) throws -> String {
         var invalidCharacters = CharacterSet(charactersIn: ":")
         invalidCharacters.formUnion(.newlines)
         invalidCharacters.formUnion(.illegalCharacters)
@@ -107,9 +107,9 @@ class FileHandler {
         }
         return validFileName
     }
-
+    
     /// Find an existing file's URL or throw an error if it doesn't exist
-    static func getExistingFileURL(for path: String?, in directory: Directory) throws -> URL {
+    public static func getExistingFileURL(for path: String?, in directory: Directory) throws -> URL {
         do {
             let url = try createURL(for: path, in: directory)
             if FileManager.default.fileExists(atPath: url.path) {
@@ -120,9 +120,9 @@ class FileHandler {
             throw error
         }
     }
-
+    
     /// Helper method for getValidFilePath(from:) to remove all "/" at the beginning of a String
-    static func removeSlashesAtBeginning(of string: String) -> String {
+    public static func removeSlashesAtBeginning(of string: String) -> String {
         var string = string
         if string.prefix(1) == "/" {
             string.remove(at: string.startIndex)

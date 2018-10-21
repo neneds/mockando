@@ -33,6 +33,7 @@ public class MockPlayerSession<T: Codable> {
         self.directoryOfFile = directoryOfFile
         self.file = file
         self.jsonDecoder = decoder
+        self.currentItem = IndexPath(row: 0, section: 0)
     }
 
     /// Play session record
@@ -66,18 +67,16 @@ public class MockPlayerSession<T: Codable> {
 
     /// Next Value of the record
     public func nextItem() {
-        guard let currentItem = currentItem else {
-            self.currentItem = IndexPath(row: 0, section: 0)
-            return
-        }
+        if !isPlaying { return }
+        guard let currentItem = currentItem else { return }
         var selectedModel: T
-        if archivedModels.count - 1 == currentItem.row {
+        if currentItem.row + 1 == archivedModels.count {
+            self.currentItem = IndexPath(row: 0, section: 0)
             if !shouldRepeat {
                 delegate?.didFinishPlayingRecordedSession(playerSession: self)
                 stopPlayingSessionRecord()
                 return
             }
-            self.currentItem = IndexPath(row: 0, section: 0)
             selectedModel = archivedModels[currentItem.row]
         } else {
             self.currentItem = IndexPath(row: currentItem.row + 1, section: 0)
@@ -88,14 +87,17 @@ public class MockPlayerSession<T: Codable> {
 
     /// Previous Item
     public func previousItem() {
-        guard let currentItem = currentItem else {
-            self.currentItem = IndexPath(row: 0, section: 0)
-            return
-        }
+        if !isPlaying { return }
+        guard let currentItem = currentItem else { return }
         var selectedModel: T
         if archivedModels.isEmpty { return }
         self.currentItem = IndexPath(row: currentItem.row - 1, section: 0)
         if currentItem.row <= 0 {
+            if !shouldRepeat {
+                delegate?.didFinishPlayingRecordedSession(playerSession: self)
+                stopPlayingSessionRecord()
+                return
+            }
             self.currentItem = IndexPath(row: archivedModels.count - 1, section: 0)
             selectedModel = archivedModels[currentItem.row]
         } else {

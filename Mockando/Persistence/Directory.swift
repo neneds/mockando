@@ -44,7 +44,7 @@ public enum Directory: Equatable {
         }
     }
 
-    static public func ==(lhs: Directory, rhs: Directory) -> Bool {
+    public static func ==(lhs: Directory, rhs: Directory) -> Bool {
         switch (lhs, rhs) {
         case (.documents, .documents), (.caches, .caches), (.temporary, .temporary):
             return true

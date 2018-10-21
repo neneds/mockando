@@ -25,12 +25,12 @@
 
 import Foundation
 
-enum MockPersistenceError: Error {
+public enum MockPersistenceError: Error {
     case fileNameError
 
 }
 
-class MockPersistenceManager {
+public class MockPersistenceManager {
     /// Save codable struct to disk as JSON data
     ///
     /// - Parameters:
@@ -63,7 +63,7 @@ class MockPersistenceManager {
     ///   - decoder: custom JSONDecoder to decode existing values
     /// - Returns: decoded data
     /// - Throws: Error if there were any issues retrieving the data or decoding it to the specified type
-    static func load<T: Decodable>(_ path: String, from directory: Directory, as type: T.Type, decoder: JSONDecoder = JSONDecoder()) throws -> T {
+    public static func load<T: Decodable>(_ path: String, from directory: Directory, as type: T.Type, decoder: JSONDecoder = JSONDecoder()) throws -> T {
         if path.hasSuffix("/") {
             throw MockPersistenceError.fileNameError
         }

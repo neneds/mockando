@@ -9,15 +9,15 @@
 import Foundation
 
 
-class SessionIdGenerator {
-
-    static func generateSessionId() -> String {
+public class SessionIdGenerator {
+    
+    public static func generateSessionId() -> String {
         return randomStringWithLength(7)
     }
-
+    
     private static func randomStringWithLength(_ len: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-
+        
         var randomString = String()
         for _ in 0..<len {
             let length = UInt32(letters.count)

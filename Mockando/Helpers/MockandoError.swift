@@ -26,26 +26,26 @@
 import Foundation
 
 
-class MockandoError: NSError {
-    class var errorDomain: String {
+public class MockandoError: NSError {
+    public class var errorDomain: String {
         return Bundle.main.bundleID
     }
 
-    class func unknown() -> NSError {
+    public class func unknown() -> NSError {
         return NSError(domain: MockandoError.errorDomain,
                        code: 115,
                        userInfo: [NSLocalizedDescriptionKey: "Unknown Error"])
     }
 
-    class func cannotParse() -> NSError {
+    public class func cannotParse() -> NSError {
         return NSError(domain: MockandoError.errorDomain, code: 116, userInfo: [NSLocalizedDescriptionKey: "Could not parse"])
     }
 
-    class func nilParameter(parameter: String) -> NSError {
+    public class func nilParameter(parameter: String) -> NSError {
         return NSError(domain: MockandoError.errorDomain, code: 121, userInfo: [NSLocalizedDescriptionKey: "Nil parameter: \(parameter)"])
     }
 
-    class func otherError(reason: String) -> NSError {
+    public class func otherError(reason: String) -> NSError {
         return NSError(domain: MockandoError.errorDomain, code: 122, userInfo: [NSLocalizedDescriptionKey: reason])
     }
 }
