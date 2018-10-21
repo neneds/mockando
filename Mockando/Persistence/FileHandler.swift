@@ -64,8 +64,6 @@ class FileHandler {
             searchPathDirectory = .documentDirectory
         case .caches:
             searchPathDirectory = .cachesDirectory
-        case .applicationSupport:
-            searchPathDirectory = .applicationSupportDirectory
         case .temporary:
             if var url = URL(string: NSTemporaryDirectory()) {
                 if let validPath = validPath {
@@ -77,30 +75,7 @@ class FileHandler {
                 }
                 return url
             } else {
-                throw createError(
-                    .couldNotAccessTemporaryDirectory,
-                    description: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")",
-                    failureReason: "Could not get access to the application's temporary directory.",
-                    recoverySuggestion: "Use a different directory."
-                )
-            }
-        case .sharedContainer(let appGroupName):
-            if var url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupName) {
-                if let validPath = validPath {
-                    url = url.appendingPathComponent(validPath, isDirectory: false)
-                }
-                if url.absoluteString.lowercased().prefix(filePrefix.count) != filePrefix {
-                    let fixedUrl = filePrefix + url.absoluteString
-                    url = URL(string: fixedUrl)!
-                }
-                return url
-            } else {
-                throw createError(
-                    .couldNotAccessSharedContainer,
-                    description: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")",
-                    failureReason: "Could not get access to shared container with app group named \(appGroupName).",
-                    recoverySuggestion: "Check that the app-group name in the entitlement matches the string provided."
-                )
+                throw MockandoError.otherError(reason: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")")
             }
         }
         if var url = FileManager.default.urls(for: searchPathDirectory, in: .userDomainMask).first {
@@ -113,12 +88,48 @@ class FileHandler {
             }
             return url
         } else {
-            throw createError(
-                .couldNotAccessUserDomainMask,
-                description: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")",
-                failureReason: "Could not get access to the file system's user domain mask.",
-                recoverySuggestion: "Use a different directory."
-            )
+            throw MockandoError.otherError(reason: "Could not create URL for \(directory.pathDescription)/\(validPath ?? "")")
         }
+    }
+
+    /// Convert a user generated name to a valid file name
+    static func getValidFilePath(from originalString: String) throws -> String {
+        var invalidCharacters = CharacterSet(charactersIn: ":")
+        invalidCharacters.formUnion(.newlines)
+        invalidCharacters.formUnion(.illegalCharacters)
+        invalidCharacters.formUnion(.controlCharacters)
+        let pathWithoutIllegalCharacters = originalString
+            .components(separatedBy: invalidCharacters)
+            .joined(separator: "")
+        let validFileName = removeSlashesAtBeginning(of: pathWithoutIllegalCharacters)
+        guard validFileName.count > 0  && validFileName != "." else {
+            throw MockandoError.otherError(reason: "Cannot write/read a file with the name\(originalString). Is an invalid file name.")
+        }
+        return validFileName
+    }
+
+    /// Find an existing file's URL or throw an error if it doesn't exist
+    static func getExistingFileURL(for path: String?, in directory: Directory) throws -> URL {
+        do {
+            let url = try createURL(for: path, in: directory)
+            if FileManager.default.fileExists(atPath: url.path) {
+                return url
+            }
+            throw MockandoError.otherError(reason: "Could not find an existing file or folder at \(url.path).")
+        } catch {
+            throw error
+        }
+    }
+
+    /// Helper method for getValidFilePath(from:) to remove all "/" at the beginning of a String
+    static func removeSlashesAtBeginning(of string: String) -> String {
+        var string = string
+        if string.prefix(1) == "/" {
+            string.remove(at: string.startIndex)
+        }
+        if string.prefix(1) == "/" {
+            string = removeSlashesAtBeginning(of: string)
+        }
+        return string
     }
 }

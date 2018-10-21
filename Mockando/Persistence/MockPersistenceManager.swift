@@ -27,47 +27,48 @@ import Foundation
 
 enum MockPersistenceError: Error {
     case fileNameError
-    case saveError(error: Error)
+
 }
 
 class MockPersistenceManager {
     /// Save codable struct to disk as JSON data
     ///
     /// - Parameters:
-    ///   - value: the Encodable struct to store
+    ///   - value: the Encodable value to store
     ///   - directory: user directory to store the file in
-    ///   - path: file location to store the data (i.e. "Folder/file.json")
+    ///   - path: file location to store the data .
     ///   - encoder: custom JSONEncoder to encode value
     /// - Throws: Error if there were any issues encoding the struct or writing it to disk
+
     static func save<T: Encodable>(_ value: T, to directory: Directory, as path: String, encoder: JSONEncoder = JSONEncoder()) throws {
         if path.hasSuffix("/") {
             throw MockPersistenceError.fileNameError
         }
         do {
-            let url = try createURL(for: path, in: directory)
+            let url = try FileHandler.createURL(for: path, in: directory)
             let data = try encoder.encode(value)
-            try createSubfoldersBeforeCreatingFile(at: url)
+            try FileHandler.createSubfoldersBeforeCreatingFile(at: url)
             try data.write(to: url, options: .atomic)
         } catch {
             throw error
         }
     }
 
-    /// Retrieve and decode a struct from a file on disk
+    /// Retrieve and decode a decodable from a file on disk
     ///
     /// - Parameters:
     ///   - path: path of the file holding desired data
     ///   - directory: user directory to retrieve the file from
     ///   - type: struct type (i.e. Message.self or [Message].self)
     ///   - decoder: custom JSONDecoder to decode existing values
-    /// - Returns: decoded structs of data
+    /// - Returns: decoded data
     /// - Throws: Error if there were any issues retrieving the data or decoding it to the specified type
     static func load<T: Decodable>(_ path: String, from directory: Directory, as type: T.Type, decoder: JSONDecoder = JSONDecoder()) throws -> T {
         if path.hasSuffix("/") {
             throw MockPersistenceError.fileNameError
         }
         do {
-            let url = try getExistingFileURL(for: path, in: directory)
+            let url = try FileHandler.getExistingFileURL(for: path, in: directory)
             let data = try Data(contentsOf: url)
             let value = try decoder.decode(type, from: data)
             return value
