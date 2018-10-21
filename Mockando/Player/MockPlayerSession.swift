@@ -33,7 +33,6 @@ public class MockPlayerSession<T: Codable> {
         self.directoryOfFile = directoryOfFile
         self.file = file
         self.jsonDecoder = decoder
-        loadFileFromDirectory()
     }
 
     /// Play session record
@@ -47,14 +46,10 @@ public class MockPlayerSession<T: Codable> {
     }
 
     /// Load File from directory
-    private func loadFileFromDirectory() {
+    public func loadFileFromDirectory() {
         do {
-            let data = try MockPersistenceManager.load(file, from: directoryOfFile, as: T.self, decoder: jsonDecoder ?? JSONDecoder())
-            guard let loadedData = data as? [T] else {
-                delegate?.didFailToLoadRecordedSession(error: MockandoError.otherError(reason: "Could not cast loaded content as an array of \(T.self)"), playerSession: self)
-                return
-            }
-            archivedModels = loadedData
+            let data = try MockPersistenceManager.load(file, from: directoryOfFile, as: [T].self, decoder: jsonDecoder ?? JSONDecoder())
+            archivedModels = data
         } catch let error {
             delegate?.didFailToLoadRecordedSession(error: error, playerSession: self)
         }
