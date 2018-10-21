@@ -8,13 +8,13 @@
 
 import Foundation
 
-protocol MockPlayerSessionDelegate: class {
+public protocol MockPlayerSessionDelegate: class {
     func didReceiveNewItem<T>(_ item: T, currentIndex: IndexPath, playerSession: MockPlayerSession<T>)
     func didFailToLoadRecordedSession<T>(error: Error?, playerSession: MockPlayerSession<T>)
     func didFinishPlayingRecordedSession<T>(playerSession: MockPlayerSession<T>)
 }
 
-class MockPlayerSession<T: Codable> {
+public class MockPlayerSession<T: Codable> {
     private(set) var jsonDecoder: JSONDecoder?
     private(set) var directoryOfFile: Directory = .caches
     private(set) var file: String = ""
@@ -24,19 +24,20 @@ class MockPlayerSession<T: Codable> {
     private(set) var currentItem: IndexPath?
     private(set) var isPlaying: Bool = false
     private      var timer: Timer?
-    var autoSkipInterval: TimeInterval = 2
-    weak var delegate: MockPlayerSessionDelegate?
-    var shouldRepeat: Bool = false
+    public var autoSkipInterval: TimeInterval = 2
+    public weak var delegate: MockPlayerSessionDelegate?
+    public var shouldRepeat: Bool = false
 
-    convenience init(directoryOfFile: Directory, file: String, decoder: JSONDecoder) {
+    public convenience init(directoryOfFile: Directory, file: String, decoder: JSONDecoder) {
         self.init()
         self.directoryOfFile = directoryOfFile
         self.file = file
         self.jsonDecoder = decoder
+        loadFileFromDirectory()
     }
 
     /// Play session record
-    func playSessionRecord(autoSkip: Bool = false) {
+    public func playSessionRecord(autoSkip: Bool = false) {
         if isPlaying { return }
         startDate = Date()
         isPlaying = true
@@ -45,8 +46,22 @@ class MockPlayerSession<T: Codable> {
         }
     }
 
+    /// Load File from directory
+    private func loadFileFromDirectory() {
+        do {
+            let data = try MockPersistenceManager.load(file, from: directoryOfFile, as: T.self, decoder: jsonDecoder ?? JSONDecoder())
+            guard let loadedData = data as? [T] else {
+                delegate?.didFailToLoadRecordedSession(error: MockandoError.otherError(reason: "Could not cast loaded content as an array of \(T.self)"), playerSession: self)
+                return
+            }
+            archivedModels = loadedData
+        } catch let error {
+            delegate?.didFailToLoadRecordedSession(error: error, playerSession: self)
+        }
+    }
+
     /// Stop playing the session record
-    func stopPlayingSessionRecord() {
+    public func stopPlayingSessionRecord() {
         if !isPlaying { return }
         isPlaying = false
         endDate = Date()
@@ -55,7 +70,7 @@ class MockPlayerSession<T: Codable> {
     }
 
     /// Next Value of the record
-    func nextItem() {
+    public func nextItem() {
         guard let currentItem = currentItem else {
             self.currentItem = IndexPath(row: 0, section: 0)
             return
@@ -77,12 +92,13 @@ class MockPlayerSession<T: Codable> {
     }
 
     /// Previous Item
-    func previousItem() {
+    public func previousItem() {
         guard let currentItem = currentItem else {
             self.currentItem = IndexPath(row: 0, section: 0)
             return
         }
         var selectedModel: T
+        if archivedModels.isEmpty { return }
         self.currentItem = IndexPath(row: currentItem.row - 1, section: 0)
         if currentItem.row <= 0 {
             self.currentItem = IndexPath(row: archivedModels.count - 1, section: 0)
@@ -106,6 +122,4 @@ class MockPlayerSession<T: Codable> {
     @objc private func callNextItem() {
         nextItem()
     }
-
-
 }

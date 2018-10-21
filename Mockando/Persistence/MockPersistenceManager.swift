@@ -40,7 +40,7 @@ class MockPersistenceManager {
     ///   - encoder: custom JSONEncoder to encode value
     /// - Throws: Error if there were any issues encoding the struct or writing it to disk
 
-    static func save<T: Encodable>(_ value: T, to directory: Directory, as path: String, encoder: JSONEncoder = JSONEncoder()) throws {
+    public static func save<T: Encodable>(_ value: T, to directory: Directory, as path: String, encoder: JSONEncoder = JSONEncoder()) throws {
         if path.hasSuffix("/") {
             throw MockPersistenceError.fileNameError
         }

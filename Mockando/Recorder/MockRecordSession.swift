@@ -25,7 +25,12 @@
 
 import Foundation
 
-class MockRecordSession<T: Codable> {
+public protocol MockRecordSessionDelegate: class {
+    func didFailToSaveRecordedSession<T>(error: Error?, recordSession: MockRecordSession<T>)
+    func didFinishRecordingSession<T>(recordSession: MockRecordSession<T>, recordedItemsCount: Int)
+}
+
+public class MockRecordSession<T: Codable> {
     private(set) var sessionId: String?
     private(set) var jsonEncoder: JSONEncoder?
     private(set) var directoryToSave: Directory = .caches
@@ -34,8 +39,9 @@ class MockRecordSession<T: Codable> {
     private(set) var endDate: Date?
     private(set) var recordedModels:[T] = []
     private(set) var isRecording: Bool = false
+    public weak var delegate: MockRecordSessionDelegate?
 
-    convenience init(directoryToSave: Directory, file: String, encoder: JSONEncoder) {
+    public convenience init(directoryToSave: Directory, file: String, encoder: JSONEncoder) {
         self.init()
         self.directoryToSave = directoryToSave
         self.file = file
@@ -44,22 +50,22 @@ class MockRecordSession<T: Codable> {
     }
 
     /// Start a session recording
-    func startSessionRecord() {
+    public func startSessionRecord() {
         if isRecording { return }
         startDate = Date()
         isRecording = true
     }
 
     /// Stop session recording
-    func stopSessionRecording() {
+    public func stopSessionRecording() {
         if !isRecording { return }
         isRecording = false
         endDate = Date()
         saveRecordedSession()
     }
-
+    
     /// Record a model instance on current recording session
-    func recordModel(_ model: T) {
+    public func recordModel(_ model: T) {
         recordedModels.append(model)
     }
 
@@ -67,8 +73,9 @@ class MockRecordSession<T: Codable> {
     private func saveRecordedSession() {
         do {
             try MockPersistenceManager.save(recordedModels, to: directoryToSave, as: file, encoder: jsonEncoder ?? JSONEncoder())
+            delegate?.didFinishRecordingSession(recordSession: self, recordedItemsCount: recordedModels.count)
         } catch let error {
-
+            delegate?.didFailToSaveRecordedSession(error: error, recordSession: self)
         }
 
     }
