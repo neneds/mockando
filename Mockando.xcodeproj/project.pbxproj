@@ -17,6 +17,7 @@
 		AFA5E07B217C03000024F364 /* MockandoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E07A217C03000024F364 /* MockandoError.swift */; };
 		AFA5E07D217C03E30024F364 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E07C217C03E30024F364 /* Bundle+Extensions.swift */; };
 		AFA5E07F217C11C80024F364 /* SessionIdGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E07E217C11C80024F364 /* SessionIdGenerator.swift */; };
+		AFA5E082217C181E0024F364 /* MockPlayerSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA5E081217C181E0024F364 /* MockPlayerSession.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		AFA5E07A217C03000024F364 /* MockandoError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockandoError.swift; sourceTree = "<group>"; };
 		AFA5E07C217C03E30024F364 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		AFA5E07E217C11C80024F364 /* SessionIdGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionIdGenerator.swift; sourceTree = "<group>"; };
+		AFA5E081217C181E0024F364 /* MockPlayerSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPlayerSession.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 		AF71C9612179688600813EF2 /* Mockando */ = {
 			isa = PBXGroup;
 			children = (
+				AFA5E080217C18020024F364 /* Player */,
 				AFA5E079217C02B10024F364 /* Helpers */,
 				AF71C97C21796D2D00813EF2 /* Persistence */,
 				AF71C9792179689800813EF2 /* Recorder */,
@@ -129,6 +132,14 @@
 				AFA5E07E217C11C80024F364 /* SessionIdGenerator.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		AFA5E080217C18020024F364 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				AFA5E081217C181E0024F364 /* MockPlayerSession.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,6 +256,7 @@
 				AF71C97E21796D5C00813EF2 /* MockPersistenceManager.swift in Sources */,
 				AFA5E07D217C03E30024F364 /* Bundle+Extensions.swift in Sources */,
 				AF71C9822179721400813EF2 /* FileHandler.swift in Sources */,
+				AFA5E082217C181E0024F364 /* MockPlayerSession.swift in Sources */,
 				AF71C9802179700A00813EF2 /* Directory.swift in Sources */,
 				AFA5E07F217C11C80024F364 /* SessionIdGenerator.swift in Sources */,
 			);

@@ -32,7 +32,7 @@ class MockRecordSession<T: Codable> {
     private(set) var file: String = ""
     private(set) var startDate: Date?
     private(set) var endDate: Date?
-    private(set) var recordedModels:[T]?
+    private(set) var recordedModels:[T] = []
     private(set) var isRecording: Bool = false
 
     convenience init(directoryToSave: Directory, file: String, encoder: JSONEncoder) {
@@ -53,13 +53,14 @@ class MockRecordSession<T: Codable> {
     /// Stop session recording
     func stopSessionRecording() {
         if !isRecording { return }
+        isRecording = false
         endDate = Date()
         saveRecordedSession()
     }
 
     /// Record a model instance on current recording session
     func recordModel(_ model: T) {
-        recordedModels?.append(model)
+        recordedModels.append(model)
     }
 
     /// Save a recorded session
