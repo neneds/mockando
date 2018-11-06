@@ -66,6 +66,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AF3625B721925836001F69C3 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				AFA5E080217C18020024F364 /* Player */,
+				AFA5E079217C02B10024F364 /* Helpers */,
+				AF71C97C21796D2D00813EF2 /* Persistence */,
+				AF71C9792179689800813EF2 /* Recorder */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		AF71C9552179688600813EF2 = {
 			isa = PBXGroup;
 			children = (
@@ -87,10 +98,7 @@
 		AF71C9612179688600813EF2 /* Mockando */ = {
 			isa = PBXGroup;
 			children = (
-				AFA5E080217C18020024F364 /* Player */,
-				AFA5E079217C02B10024F364 /* Helpers */,
-				AF71C97C21796D2D00813EF2 /* Persistence */,
-				AF71C9792179689800813EF2 /* Recorder */,
+				AF3625B721925836001F69C3 /* Classes */,
 				AF71C9622179688600813EF2 /* Mockando.h */,
 				AF71C9632179688600813EF2 /* Info.plist */,
 			);
@@ -340,6 +348,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -397,6 +406,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
