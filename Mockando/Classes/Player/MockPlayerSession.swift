@@ -67,7 +67,7 @@ public class MockPlayerSession<T: Codable> {
     /// Next Value of the record
     public func nextItem() {
         if !isPlaying { return }
-        if currentItemRow < archivedModels.count {
+        if currentItemRow < archivedModels.count - 1 {
             currentItemRow = currentItemRow + 1
             selectItem(row: currentItemRow)
         } else {
