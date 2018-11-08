@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol MockPlayerSessionDelegate: class {
-    func didReceiveNewItem<T>(_ item: T, currentIndex: IndexPath, playerSession: MockPlayerSession<T>)
+    func didReceiveNewItem<T>(_ item: T, currentIndexRow: Int, playerSession: MockPlayerSession<T>)
     func didFailToLoadRecordedSession<T>(error: Error?, playerSession: MockPlayerSession<T>)
     func didFinishPlayingRecordedSession<T>(playerSession: MockPlayerSession<T>)
 }
@@ -21,7 +21,7 @@ public class MockPlayerSession<T: Codable> {
     private(set) var startDate: Date?
     private(set) var endDate: Date?
     private(set) var archivedModels:[T] = []
-    private(set) var currentItem: IndexPath?
+    private(set) var currentItemIndex: Int = 1
     private(set) var isPlaying: Bool = false
     private      var timer: Timer?
     public var autoSkipInterval: TimeInterval = 2
@@ -33,7 +33,6 @@ public class MockPlayerSession<T: Codable> {
         self.directoryOfFile = directoryOfFile
         self.file = file
         self.jsonDecoder = decoder
-        self.currentItem = IndexPath(row: 0, section: 0)
     }
 
     /// Play session record
@@ -62,50 +61,49 @@ public class MockPlayerSession<T: Codable> {
         isPlaying = false
         endDate = Date()
         timer?.invalidate()
-        self.currentItem = IndexPath(row: 0, section: 0)
+        self.currentItemIndex = 1
     }
 
     /// Next Value of the record
     public func nextItem() {
         if !isPlaying { return }
-        guard let currentItem = currentItem else { return }
-        var selectedModel: T
-        if currentItem.row + 1 == archivedModels.count {
-            self.currentItem = IndexPath(row: 0, section: 0)
+        if currentItemIndex < archivedModels.count {
+            currentItemIndex = currentItemIndex + 1
+            selectItem(row: currentItemIndex)
+        } else {
             if !shouldRepeat {
                 delegate?.didFinishPlayingRecordedSession(playerSession: self)
                 stopPlayingSessionRecord()
                 return
             }
-            selectedModel = archivedModels[currentItem.row]
-        } else {
-            self.currentItem = IndexPath(row: currentItem.row + 1, section: 0)
-            selectedModel = archivedModels[currentItem.row]
+            currentItemIndex = 1
+            selectItem(row: currentItemIndex)
         }
-        delegate?.didReceiveNewItem(selectedModel, currentIndex: currentItem, playerSession: self)
     }
 
     /// Previous Item
     public func previousItem() {
         if !isPlaying { return }
-        guard let currentItem = currentItem else { return }
-        var selectedModel: T
         if archivedModels.isEmpty { return }
 
-        if currentItem.row <= 0 {
+        if currentItemIndex <= 1 {
             if !shouldRepeat {
                 delegate?.didFinishPlayingRecordedSession(playerSession: self)
                 stopPlayingSessionRecord()
                 return
             }
-            self.currentItem = IndexPath(row: archivedModels.count - 1, section: 0)
-            selectedModel = archivedModels[currentItem.row]
+            currentItemIndex = archivedModels.count
+            selectItem(row: currentItemIndex)
         } else {
-            self.currentItem = IndexPath(row: currentItem.row - 1, section: 0)
-            selectedModel = archivedModels[currentItem.row]
+            currentItemIndex = currentItemIndex - 1
+            selectItem(row: currentItemIndex)
         }
+    }
 
-        delegate?.didReceiveNewItem(selectedModel, currentIndex: currentItem, playerSession: self)
+    private func selectItem(row: Int) {
+        let rowToSelect = row - 1
+        let selectedItem = archivedModels[rowToSelect]
+        delegate?.didReceiveNewItem(selectedItem, currentIndexRow: rowToSelect, playerSession: self)
     }
 
     private func setupSkipTimer() {
