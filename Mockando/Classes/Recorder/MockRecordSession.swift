@@ -71,12 +71,20 @@ public class MockRecordSession<T: Codable> {
 
     /// Save a recorded session
     private func saveRecordedSession() {
-        do {
-            try MockPersistenceManager.save(recordedModels, to: directoryToSave, as: file, encoder: jsonEncoder ?? JSONEncoder())
-            delegate?.didFinishRecordingSession(recordSession: self, recordedItemsCount: recordedModels.count)
-        } catch let error {
-            delegate?.didFailToSaveRecordedSession(error: error, recordSession: self)
+        let bgQueue = DispatchQueue(label: "Mockando-Record-\(sessionId ?? "unknown")", qos: .background)
+        bgQueue.async{
+            do {
+                try MockPersistenceManager.save(self.recordedModels, to: self.directoryToSave, as: self.file, encoder: self.jsonEncoder ?? JSONEncoder())
+                DispatchQueue.main.async {
+                    self.delegate?.didFinishRecordingSession(recordSession: self, recordedItemsCount: self.recordedModels.count)
+                }
+            } catch let error {
+                DispatchQueue.main.async {
+                    self.delegate?.didFailToSaveRecordedSession(error: error, recordSession: self)
+                }
+            }
         }
+
 
     }
 }

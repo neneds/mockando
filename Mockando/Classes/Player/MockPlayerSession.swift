@@ -21,7 +21,7 @@ public class MockPlayerSession<T: Codable> {
     private(set) var startDate: Date?
     private(set) var endDate: Date?
     private(set) var archivedModels:[T] = []
-    private(set) var currentItemRow: Int = 0
+    private(set) var currentItemIndex: Int = 1
     private(set) var isPlaying: Bool = false
     private      var timer: Timer?
     public var autoSkipInterval: TimeInterval = 2
@@ -61,23 +61,23 @@ public class MockPlayerSession<T: Codable> {
         isPlaying = false
         endDate = Date()
         timer?.invalidate()
-        self.currentItemRow = 0
+        self.currentItemIndex = 1
     }
 
     /// Next Value of the record
     public func nextItem() {
         if !isPlaying { return }
-        if currentItemRow < archivedModels.count - 1 {
-            currentItemRow = currentItemRow + 1
-            selectItem(row: currentItemRow)
+        if currentItemIndex < archivedModels.count {
+            currentItemIndex = currentItemIndex + 1
+            selectItem(row: currentItemIndex)
         } else {
             if !shouldRepeat {
                 delegate?.didFinishPlayingRecordedSession(playerSession: self)
                 stopPlayingSessionRecord()
                 return
             }
-            currentItemRow = 0
-            selectItem(row: currentItemRow)
+            currentItemIndex = 1
+            selectItem(row: currentItemIndex)
         }
     }
 
@@ -86,23 +86,24 @@ public class MockPlayerSession<T: Codable> {
         if !isPlaying { return }
         if archivedModels.isEmpty { return }
 
-        if currentItemRow <= 0 {
+        if currentItemIndex <= 1 {
             if !shouldRepeat {
                 delegate?.didFinishPlayingRecordedSession(playerSession: self)
                 stopPlayingSessionRecord()
                 return
             }
-            currentItemRow = archivedModels.count - 1
-            selectItem(row: currentItemRow)
+            currentItemIndex = archivedModels.count
+            selectItem(row: currentItemIndex)
         } else {
-            currentItemRow = currentItemRow - 1
-            selectItem(row: currentItemRow)
+            currentItemIndex = currentItemIndex - 1
+            selectItem(row: currentItemIndex)
         }
     }
 
     private func selectItem(row: Int) {
-        let selectedItem = archivedModels[row]
-        delegate?.didReceiveNewItem(selectedItem, currentIndexRow: row, playerSession: self)
+        let rowToSelect = row - 1
+        let selectedItem = archivedModels[rowToSelect]
+        delegate?.didReceiveNewItem(selectedItem, currentIndexRow: rowToSelect, playerSession: self)
     }
 
     private func setupSkipTimer() {
